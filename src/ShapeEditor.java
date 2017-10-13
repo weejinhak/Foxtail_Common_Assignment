@@ -1,11 +1,12 @@
 import processing.core.PApplet;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShapeEditor extends PApplet {
+public class ShapeEditor extends PApplet implements Serializable{
 
-    private List<Shape> shapeList = new ArrayList<>();
+    private ArrayList<Shape> shapeList = new ArrayList<>();
     private int keyState;
     private boolean isControlPressed;
 
@@ -58,8 +59,16 @@ public class ShapeEditor extends PApplet {
             keyState = 3;
         if ((char) keyCode == 'D' || (char) keyCode == 'd')
             keyState = 9;
-        if (keyState == 9 && isControlPressed) {
+        if (keyState == 9 && isControlPressed)
             duplicateShape();
+        if((char)keyCode=='S'||(char)keyCode=='s')
+            keyState=8;
+        if(keyState==8 && isControlPressed)
+            FileIo.serializing(shapeList);
+        if((char)keyCode=='O'||(char)keyCode=='o')
+            keyState=7;
+        if(keyState==7 && isControlPressed){
+            FileIo.deserializing();
         }
     }
 
