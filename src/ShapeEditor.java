@@ -1,6 +1,10 @@
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import processing.core.PApplet;
 
-import java.io.Serializable;
+import java.io.*;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +53,7 @@ public class ShapeEditor extends PApplet implements Serializable{
 
     @Override
     public void keyPressed() {
+        int key = Character.toUpperCase(keyCode);
         if (keyCode == CONTROL)
             isControlPressed = true;
         if ((char) keyCode == '1')
@@ -57,18 +62,20 @@ public class ShapeEditor extends PApplet implements Serializable{
             keyState = 2;
         if ((char) keyCode == '3')
             keyState = 3;
-        if ((char) keyCode == 'D' || (char) keyCode == 'd')
+        if ((char)key=='d')
             keyState = 9;
         if (keyState == 9 && isControlPressed)
             duplicateShape();
-        if((char)keyCode=='S'||(char)keyCode=='s')
+        if((char)key=='s')
             keyState=8;
         if(keyState==8 && isControlPressed)
-            FileIo.serializing(shapeList);
-        if((char)keyCode=='O'||(char)keyCode=='o')
+            System.out.print("저장되냐");
+            saveShape();
+        if((char)key=='o')
             keyState=7;
         if(keyState==7 && isControlPressed){
-            FileIo.deserializing();
+            System.out.println("불러오냐");
+            openShape();
         }
     }
 
@@ -119,6 +126,25 @@ public class ShapeEditor extends PApplet implements Serializable{
         changeColor.setRed(255);
         e.setColor(changeColor);
 
+    }
+    private void saveShape(){
+        Gson gson = new GsonBuilder().registerTypeHierarchyAdapter(Shape.class, new ShapeTypeAdapter()).create();
+        try(Writer writer= new FileWriter("shape.json")){
+            gson.toJson(shapeList,writer);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    private void openShape(){
+        Gson gson = new GsonBuilder().registerTypeHierarchyAdapter(Shape.class, new ShapeTypeAdapter()).create();
+        Type type = new TypeToken<List<Shape>>() {}.getType();
+        try(BufferedReader br = new BufferedReader(new FileReader("Shape.json"))){
+            shapeList = gson.fromJson(br, type);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
 }

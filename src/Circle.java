@@ -2,9 +2,11 @@ import processing.core.PApplet;
 
 public class Circle extends Shape {
 
-    Circle(int x, int y, Color color){
-        super(x,y,color);
+    Circle(){}
+    public Circle(float x, float y, Color color) {
+        super(x, y, color);
     }
+
 
     @Override
     public void draw(PApplet pApplet){

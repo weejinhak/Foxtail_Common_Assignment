@@ -1,10 +1,13 @@
 import processing.core.PApplet;
+import sun.security.provider.SHA;
 
 abstract class Shape implements Cloneable {
 
     private float x;
     private float y;
     private Color color;
+
+    Shape(){}
 
     Shape(float x, float y, Color color){
         this.x=x;

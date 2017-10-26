@@ -1,7 +1,7 @@
 public class Color {
-  private int red;
-  private int green;
-  private int blue;
+    private int red;
+    private int green;
+    private int blue;
 
     public Color(int red, int green, int blue) {
         this.red = red;
@@ -40,5 +40,14 @@ public class Color {
         } catch (CloneNotSupportedException e) {
             return null;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Color{" +
+                "red=" + red +
+                ", green=" + green +
+                ", blue=" + blue +
+                '}';
     }
 }
